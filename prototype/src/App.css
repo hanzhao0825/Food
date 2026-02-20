@@ -1,0 +1,241 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+body {
+  background-color: #1e1e2e;
+  color: #cdd6f4;
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+/* Grid Board */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(12, 40px);
+  grid-template-rows: repeat(12, 40px);
+  gap: 2px;
+  background-color: #313244;
+  padding: 4px;
+  border-radius: 8px;
+  margin: 20px auto;
+  width: max-content;
+}
+
+.grid-cell {
+  width: 40px;
+  height: 40px;
+  background-color: #45475a;
+  border: 1px solid #585b70;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+}
+
+.grid-cell:hover {
+  background-color: #585b70;
+}
+
+.grid-cell.highlight-move {
+  background-color: #89b4fa;
+  box-shadow: inset 0 0 10px #74c7ec;
+}
+
+.grid-cell.highlight-attack {
+  background-color: #f38ba8;
+  box-shadow: inset 0 0 10px #eba0ac;
+}
+
+.grid-cell.highlight-swap {
+  background-color: #a6e3a1;
+  box-shadow: inset 0 0 10px #94e2d5;
+  animation: pulse 1s infinite;
+}
+
+.grid-cell.highlight-deploy {
+  background-color: #fab387;
+  box-shadow: inset 0 0 10px #f9e2af;
+  opacity: 0.8;
+}
+
+.grid-cell.highlight-summon {
+  background-color: #f9e2af;
+  box-shadow: inset 0 0 10px #fab387;
+}
+
+.grid-cell.highlight-recipe-target {
+  background-color: rgba(203, 166, 247, 0.2);
+  border: 2px solid #cba6f7;
+  box-shadow: 0 0 8px #cba6f7;
+  cursor: crosshair;
+}
+
+.grid-cell.highlight-recipe-aoe {
+  background-color: rgba(243, 139, 168, 0.4);
+  box-shadow: inset 0 0 15px rgba(243, 139, 168, 0.6);
+  z-index: 2;
+}
+
+/* Entities */
+.grid-cell.highlight-heat {
+  background-color: #fab387;
+  box-shadow: inset 0 0 15px #f9e2af;
+  animation: heat-glow 1.5s infinite;
+}
+
+@keyframes heat-glow {
+  0% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 0.9;
+  }
+
+  100% {
+    opacity: 0.6;
+  }
+}
+
+.entity-base {
+  background-color: #f9e2af;
+  border-radius: 8px;
+}
+
+.entity-player {
+  background-color: #cba6f7;
+  color: #11111b;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.entity-player.actioned {
+  opacity: 0.5;
+  filter: grayscale(100%);
+}
+
+.entity-enemy {
+  background-color: #f38ba8;
+  color: #11111b;
+  border-radius: 4px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* UI Panel */
+.ui-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #181825;
+  border-top: 1px solid #313244;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.heat-bar-container {
+  width: 300px;
+  height: 20px;
+  background-color: #313244;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid #f38ba8;
+}
+
+.heat-bar-fill {
+  height: 100%;
+  background-color: #f38ba8;
+  transition: width 0.3s ease;
+}
+
+/* Modals / Overlays */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal {
+  background-color: #1e1e2e;
+  padding: 30px;
+  border-radius: 16px;
+  border: 2px solid #89b4fa;
+  min-width: 300px;
+  text-align: center;
+}
+
+.btn {
+  background-color: #89b4fa;
+  color: #11111b;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 5px;
+  transition: transform 0.1s;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+.btn:disabled {
+  background-color: #585b70;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.hp-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background-color: #a6e3a1;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
